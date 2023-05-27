@@ -1,10 +1,12 @@
 <template>
-  <div class="container mx-auto mt-6 ">
+  <div class="container mx-auto mt-6">
     <h1 class="font-bold text-3xl">Search Old Currency</h1>
     <div class="flex items-center justify-between mt-6 mb-12 gap-12">
       <div class="flex gap-6">
         <div class="relative">
-          <label for="countryFilter" class="block mb-2">Country</label>
+          <label for="countryFilter" class="block mb-2 font-semibold"
+            >Country</label
+          >
           <select
             id="countryFilter"
             v-model="selectedCountry"
@@ -26,8 +28,8 @@
             <ChevronDownIcon class="w-4 h-4 text-gray-500" />
           </div>
         </div>
-        <div class="relative ">
-          <label for="yearFilter" class="block mb-2">Year</label>
+        <div class="relative">
+          <label for="yearFilter" class="block mb-2 font-semibold">Year</label>
           <select
             id="yearFilter"
             v-model="selectedYear"
@@ -48,6 +50,30 @@
             <ChevronDownIcon class="w-4 h-4 text-gray-500" />
           </div>
         </div>
+        <div class="relative">
+          <label for="statusFilter" class="block mb-2 font-semibold"
+            >Status</label
+          >
+          <select
+            id="statusFilter"
+            v-model="selectedStatus"
+            class="block appearance-none w-full px-4 py-2 border border-gray-300 rounded-md"
+          >
+            <option value="">All statuses</option>
+            <option
+              v-for="status in statuses"
+              :value="status"
+              class="border-t border-gray-300"
+            >
+              {{ status }}
+            </option>
+          </select>
+          <div
+            class="absolute inset-y-0 mt-7 ml-4 right-0 flex items-center px-2 pointer-events-none"
+          >
+            <ChevronDownIcon class="w-4 h-4 text-gray-500" />
+          </div>
+        </div>
       </div>
       <div class="mb-4">
         <button
@@ -58,7 +84,7 @@
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-4 gap-4">
       <CurrencyCard
         v-for="currency in filteredCurrencies"
         :key="currency.country_name"
@@ -84,6 +110,7 @@ export default defineComponent({
       currencies: currencyData,
       selectedCountry: "",
       selectedYear: "",
+      selectedStatus: "",
     };
   },
   computed: {
@@ -95,12 +122,16 @@ export default defineComponent({
     years() {
       return [...new Set(this.currencies.map((currency) => currency.year))];
     },
+    statuses() {
+      return [...new Set(this.currencies.map((currency) => currency.status))];
+    },
     filteredCurrencies() {
       return this.currencies.filter((currency) => {
         return (
           (!this.selectedCountry ||
             currency.country_name === this.selectedCountry) &&
-          (!this.selectedYear || currency.year === this.selectedYear)
+          (!this.selectedYear || currency.year === this.selectedYear) &&
+          (!this.selectedStatus || currency.status === this.selectedStatus)
         );
       });
     },
@@ -109,6 +140,7 @@ export default defineComponent({
     clearFilters() {
       this.selectedCountry = "";
       this.selectedYear = "";
+      this.selectedStatus = "";
     },
   },
 });
