@@ -74,6 +74,21 @@
             <ChevronDownIcon class="w-4 h-4 text-gray-500" />
           </div>
         </div>
+        <div class="relative">
+          <label for="valueFilter" class="block mb-2 font-semibold">Notes Range</label>
+          <input
+            id="valueFilter"
+            type="range"
+            v-model="selectedValueRange"
+            min="0"
+            max="100"
+            class="block w-full"
+          />
+          <div class="mt-2 flex justify-between">
+            <span>{{ selectedValueRange[0] }}</span>
+            <span>{{ selectedValueRange[1] }}</span>
+          </div>
+        </div>
       </div>
       <div class="mb-4">
         <button
@@ -84,7 +99,9 @@
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
       <CurrencyCard
         v-for="currency in filteredCurrencies"
         :key="currency.country_name"
@@ -111,6 +128,7 @@ export default defineComponent({
       selectedCountry: "",
       selectedYear: "",
       selectedStatus: "",
+      selectedValueRange: [0, 100],
     };
   },
   computed: {
@@ -131,7 +149,9 @@ export default defineComponent({
           (!this.selectedCountry ||
             currency.country_name === this.selectedCountry) &&
           (!this.selectedYear || currency.year === this.selectedYear) &&
-          (!this.selectedStatus || currency.status === this.selectedStatus)
+          (!this.selectedStatus || currency.status === this.selectedStatus) &&
+          currency.value >= this.selectedValueRange[0] &&
+          currency.value <= this.selectedValueRange[1]
         );
       });
     },
@@ -141,6 +161,7 @@ export default defineComponent({
       this.selectedCountry = "";
       this.selectedYear = "";
       this.selectedStatus = "";
+      this.selectedValueRange = [0, 100];
     },
   },
 });
