@@ -36,3 +36,15 @@ export default {
   },
 };
 </script>
+
+<style>
+  /* Example styles for a specific element */
+  .font-open-sans {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  /* Example styles for multiple elements */
+  h1, h2, p {
+    font-family: 'Open Sans', sans-serif;
+  }
+</style>
