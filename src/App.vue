@@ -1,16 +1,16 @@
 <template>
-  <div class="container mx-auto mt-6">
+  <div class="container mx-auto mt-6 ">
     <h1 class="font-bold text-3xl">Search Old Currency</h1>
-    <div class="flex items-center justify-between mb-12 gap-12">
+    <div class="flex items-center justify-between mt-6 mb-12 gap-12">
       <div class="flex gap-6">
         <div class="relative">
-          <label for="countryFilter" class="block">Country</label>
+          <label for="countryFilter" class="block mb-2">Country</label>
           <select
             id="countryFilter"
             v-model="selectedCountry"
             class="block appearance-none w-full px-4 py-2 border border-gray-300 rounded-md"
           >
-            <option value="">Select Country</option>
+            <option value="">All Country</option>
             <option
               v-for="country in countries"
               :value="country"
@@ -21,13 +21,13 @@
             <option value="">All Countries</option>
           </select>
           <div
-            class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none"
+            class="absolute inset-y-0 mt-7 ml-4 right-0 flex items-center px-2 pointer-events-none"
           >
             <ChevronDownIcon class="w-4 h-4 text-gray-500" />
           </div>
         </div>
-        <div class="relative">
-          <label for="yearFilter" class="block">Year</label>
+        <div class="relative ">
+          <label for="yearFilter" class="block mb-2">Year</label>
           <select
             id="yearFilter"
             v-model="selectedYear"
@@ -42,6 +42,11 @@
               {{ year }}
             </option>
           </select>
+          <div
+            class="absolute inset-y-0 mt-7 ml-4 right-0 flex items-center px-2 pointer-events-none"
+          >
+            <ChevronDownIcon class="w-4 h-4 text-gray-500" />
+          </div>
         </div>
       </div>
       <div class="mb-4">
