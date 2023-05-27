@@ -1,25 +1,29 @@
 <template>
-  <div>
+  <div class="container mx-auto mt-6">
+    <h1 class="font-bold text-3xl">Search Old Currency</h1>
     <div>
-      <label for="countryFilter">Filter by Country:</label>
+      <label for="countryFilter">Country:</label>
       <select id="countryFilter" v-model="selectedCountry">
-        <option value="">All</option>
+        <option value="">Select Country</option>
         <option v-for="country in countries" :value="country">
           {{ country }}
         </option>
       </select>
     </div>
     <div>
-      <label for="priceFilter">Filter by Price:</label>
-      <select id="priceFilter" v-model="selectedPrice">
+      <label for="yearFilter">Filter by Year:</label>
+      <select id="yearFilter" v-model="selectedYear">
         <option value="">All</option>
-        <option v-for="price in prices" :value="price">{{ price }}</option>
+        <option v-for="year in years" :value="year">{{ year }}</option>
       </select>
     </div>
-    <div>
+    <div class="mb-4">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="clearFilters">Clear Filters</button>
+    </div>
+    <div class="grid grid-cols-3 gap-4">
       <CurrencyCard
         v-for="currency in filteredCurrencies"
-        :key="currency.name"
+        :key="currency.country_name"
         :currency="currency"
       />
     </div>
@@ -39,25 +43,29 @@ export default defineComponent({
     return {
       currencies: currencyData,
       selectedCountry: "",
-      selectedPrice: "",
+      selectedYear: "",
     };
   },
   computed: {
     countries() {
-      return [...new Set(this.currencies.map((currency) => currency.country))];
+      return [...new Set(this.currencies.map((currency) => currency.country_name))];
     },
-    prices() {
-      return [...new Set(this.currencies.map((currency) => currency.price))];
+    years() {
+      return [...new Set(this.currencies.map((currency) => currency.year))];
     },
     filteredCurrencies() {
       return this.currencies.filter((currency) => {
         return (
-          (!this.selectedCountry ||
-            currency.country === this.selectedCountry) &&
-          (!this.selectedPrice ||
-            currency.price === parseInt(this.selectedPrice))
+          (!this.selectedCountry || currency.country_name === this.selectedCountry) &&
+          (!this.selectedYear || currency.year === this.selectedYear)
         );
       });
+    },
+  },
+  methods: {
+    clearFilters() {
+      this.selectedCountry = "";
+      this.selectedYear = "";
     },
   },
 });
