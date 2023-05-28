@@ -30,20 +30,21 @@
         </div>
         <div class="relative">
           <label for="yearFilter" class="block mb-2 font-semibold">Year</label>
-          <select
-            id="yearFilter"
-            v-model="selectedYear"
-            class="block appearance-none w-full px-4 py-2 border border-gray-300 rounded-md"
-          >
-            <option value="">All years</option>
-            <option
-              v-for="year in years"
-              :value="year"
-              class="border-t border-gray-300"
-            >
-              {{ year }}
-            </option>
-          </select>
+          <div class="custom-dropdown">
+            <div class="selected-year" @click="toggleDropdown">
+              {{ selectedYear || "All years" }}
+            </div>
+            <div v-show="isDropdownOpen" class="dropdown-options">
+              <div
+                v-for="year in years"
+                :key="year"
+                :class="['year-option', { selected: year === selectedYear }]"
+                @click="selectYear(year)"
+              >
+                {{ year }}
+              </div>
+            </div>
+          </div>
           <div
             class="absolute inset-y-0 mt-7 ml-4 right-0 flex items-center px-2 pointer-events-none"
           >
@@ -75,7 +76,9 @@
           </div>
         </div>
         <div class="relative">
-          <label for="valueFilter" class="block mb-2 font-semibold">Notes Range</label>
+          <label for="valueFilter" class="block mb-2 font-semibold"
+            >Notes Range</label
+          >
           <input
             id="valueFilter"
             type="range"
@@ -116,17 +119,21 @@ import { defineComponent } from "vue";
 import CurrencyCard from "./components/CurrencyCard.vue";
 import currencyData from "./currencies.json";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon.vue";
+import Datepicker from "vue3-datepicker";
+import "vue3-datepicker/dist/vue3-datepicker.css";
 
 export default defineComponent({
   components: {
     CurrencyCard,
     ChevronDownIcon,
+    Datepicker,
   },
   data() {
     return {
       currencies: currencyData,
       selectedCountry: "",
       selectedYear: "",
+      isDropdownOpen: false,
       selectedStatus: "",
       selectedValueRange: [0, 100],
     };
@@ -138,8 +145,15 @@ export default defineComponent({
       ];
     },
     years() {
-      return [...new Set(this.currencies.map((currency) => currency.year))];
+      const startYear = 1900;
+      const endYear = 2023;
+      const years = [];
+      for (let year = startYear; year <= endYear; year++) {
+        years.push(year.toString());
+      }
+      return years;
     },
+
     statuses() {
       return [...new Set(this.currencies.map((currency) => currency.status))];
     },
@@ -163,6 +177,79 @@ export default defineComponent({
       this.selectedStatus = "";
       this.selectedValueRange = [0, 100];
     },
+    selectYear(year) {
+      this.selectedYear = year;
+      this.isDropdownOpen = false;
+    },
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen;
+    },
   },
 });
 </script>
+<style>
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.selected-year {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: calc(100% + 8px); /* Position the dropdown below the input */
+  left: 50%; /* Center the dropdown relative to the input */
+  transform: translateX(-50%); /* Adjust the horizontal centering */
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Display options in three columns */
+  gap: 8px; /* Add gap between options */
+  max-height: 248px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 8px;
+  
+  border-radius: 4px;
+  background-color: #fff;
+  margin-top: 8px;
+
+  /* Scrollbar Styling */
+  scrollbar-width: thin; /* Set the width of the scrollbar */
+  scrollbar-color: #ccc transparent; /* Set the color of the scrollbar track and thumb */
+}
+
+.dropdown-options::-webkit-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+.dropdown-options::-webkit-scrollbar-track {
+  background-color: transparent; /* Set the background color of the scrollbar track */
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Set the color of the scrollbar thumb */
+}
+
+.year-option {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.year-option:hover {
+  background-color: blue;
+  color: white;
+  border-radius: 4px; /* Add rounded border */
+}
+
+.year-option.selected {
+  background-color: blue;
+  color: white;
+}
+
+
+</style>

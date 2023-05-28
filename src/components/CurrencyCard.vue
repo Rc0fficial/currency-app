@@ -5,7 +5,7 @@
     <img
       :src="currency.front_pic"
       alt="Front"
-      class="currency-card-image h-[150px]"
+      class="currency-card-image h-[150px] w-full"
     />
     <div class="mx-3 mt-4 mb-6">
       <div class="flex justify-between">
@@ -36,5 +36,3 @@ export default {
   },
 };
 </script>
-
-
