@@ -51,6 +51,7 @@
             <ChevronDownIcon class="w-4 h-4 text-gray-500" />
           </div>
         </div>
+
         <div class="relative">
           <label for="statusFilter" class="block mb-2 font-semibold"
             >Status</label
@@ -85,7 +86,7 @@
             v-model="selectedValueRange"
             min="0"
             max="100"
-            class="block w-full"
+            class="block w-[400px]"
           />
           <div class="mt-2 flex justify-between">
             <span>{{ selectedValueRange[0] }}</span>
@@ -213,7 +214,7 @@ export default defineComponent({
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: 8px;
-  
+
   border-radius: 4px;
   background-color: #fff;
   margin-top: 8px;
@@ -250,6 +251,4 @@ export default defineComponent({
   background-color: blue;
   color: white;
 }
-
-
 </style>
